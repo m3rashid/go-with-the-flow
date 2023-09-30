@@ -1,0 +1,13 @@
+package permission
+
+const (
+	PERMISSION_READ   = 1
+	PERMISSION_CREATE = 2
+	PERMISSION_UPDATE = 4
+	PERMISSION_DELETE = 8
+)
+
+const (
+	SCOPE_SELF = 1
+	SCOPE_ALL  = 2
+)
