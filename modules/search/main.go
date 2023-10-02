@@ -1,7 +1,7 @@
 package search
 
 import (
-	"github.com/m3rashid/server/modules"
+	"github.com/m3rashid/go-server/modules"
 )
 
 var SearchModule = modules.Module{

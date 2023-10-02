@@ -5,8 +5,8 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/monitor"
-	"github.com/m3rashid/server/middlewares"
-	search "github.com/m3rashid/server/modules/search/schema"
+	"github.com/m3rashid/go-server/middlewares"
+	search "github.com/m3rashid/go-server/modules/search/schema"
 )
 
 type Permission = map[string]struct {

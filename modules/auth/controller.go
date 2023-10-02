@@ -6,15 +6,15 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
-	"github.com/m3rashid/server/db"
-	auth "github.com/m3rashid/server/modules/auth/schema"
+	"github.com/m3rashid/go-server/db"
+	"github.com/m3rashid/go-server/middlewares"
+	auth "github.com/m3rashid/go-server/modules/auth/schema"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func Login() fiber.Handler {
 	return func(ctx *fiber.Ctx) error {
-		collection := db.OpenCollection(db.Client, auth.USER_MODEL_NAME)
-
 		loginBody := struct {
 			Email    string `json:"email" validate:"required,email"`
 			Password string `json:"password" validate:"required"`
@@ -31,12 +31,30 @@ func Login() fiber.Handler {
 		}
 
 		var user auth.User
-		err = collection.FindOne(ctx.Context(), auth.User{Email: loginBody.Email}).Decode(&user)
+		collection := db.OpenCollection(db.Client, auth.USER_MODEL_NAME)
+		err = collection.FindOne(ctx.Context(), bson.M{
+			"email": loginBody.Email,
+		}).Decode(&user)
 		if err != nil {
 			return ctx.Status(http.StatusInternalServerError).SendString(err.Error())
 		}
 
-		return ctx.Status(http.StatusOK).JSON(user)
+		log.Println(user.ID.String(), user.Email)
+
+		passwordsMatched := VerifyPassword(user.Password, loginBody.Password)
+		if !passwordsMatched {
+			return ctx.Status(http.StatusUnauthorized).SendString("Credentials did not match")
+		}
+
+		token, err := middlewares.GenerateJWT(user.ID.String(), user.Email)
+		if err != nil {
+			return ctx.Status(http.StatusInternalServerError).SendString(err.Error())
+		}
+
+		return ctx.Status(http.StatusOK).JSON(fiber.Map{
+			"user":  user,
+			"token": token,
+		})
 	}
 }
 
@@ -59,11 +77,13 @@ func Register() fiber.Handler {
 
 		validator := validator.New()
 		err = validator.Struct(newUser)
-
 		if err != nil {
 			log.Println(err)
 			return ctx.Status(http.StatusBadRequest).SendString("Bad Request")
 		}
+
+		password := HashPassword(newUser.Password)
+		newUser.Password = password
 
 		res, err := collection.InsertOne(ctx.Context(), newUser)
 		if err != nil {

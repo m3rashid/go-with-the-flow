@@ -1,7 +1,7 @@
 package permission
 
 import (
-	"github.com/m3rashid/server/db"
+	"github.com/m3rashid/go-server/db"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 

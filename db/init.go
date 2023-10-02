@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/joho/godotenv"
+	"go.mongodb.org/mongo-driver/event"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -17,10 +18,21 @@ func DBinstance() *mongo.Client {
 		log.Fatal("Error loading .env file")
 	}
 
+	/*
+		// ctx := context.Background()
+		clientOpts := options.Client().ApplyURI(os.Getenv("MONGODB_URI")).SetMonitor(cmdMonitor)
+		log.Println(clientOpts)
+	*/
+
+	cmdMonitor := &event.CommandMonitor{
+		Started: func(_ context.Context, evt *event.CommandStartedEvent) {
+			log.Print(evt.Command)
+		},
+	}
 	mongoDbUri := os.Getenv("MONGODB_URI")
 	log.Println("Connecting to MongoDB at " + mongoDbUri + " ...")
 
-	client, err := mongo.NewClient(options.Client().ApplyURI(mongoDbUri))
+	client, err := mongo.NewClient(options.Client().ApplyURI(mongoDbUri).SetMonitor(cmdMonitor))
 	if err != nil {
 		log.Fatal(err)
 	}

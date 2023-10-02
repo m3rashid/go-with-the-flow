@@ -15,10 +15,5 @@ func GenerateJWT(userId string, email string) (string, error) {
 	claims["userId"] = userId
 	claims["email"] = email
 
-	tokenString, err := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
-	if err != nil {
-		return "", err
-	}
-
-	return tokenString, nil
+	return token.SignedString(os.Getenv("JWT_SECRET"))
 }

@@ -20,19 +20,19 @@ func CheckAuth() fiber.Handler {
 	return func(ctx *fiber.Ctx) error {
 		clientToken := ctx.Get("Authorization")
 		if clientToken == "" {
-			return ctx.Status(fiber.StatusInternalServerError).SendString("No Authorization header provided")
+			return ctx.Status(fiber.StatusUnauthorized).SendString("No Authorization header provided")
 		}
 
 		token, err := jwt.ParseWithClaims(clientToken, &Claims{}, func(token *jwt.Token) (interface{}, error) {
 			return []byte(os.Getenv("JWT_SECRET")), nil
 		})
 		if err != nil {
-			return ctx.Status(fiber.StatusInternalServerError).SendString(err.Error())
+			return ctx.Status(fiber.StatusUnauthorized).SendString(err.Error())
 		}
 
 		claims, ok := token.Claims.(*Claims)
 		if !ok {
-			return ctx.Status(fiber.StatusInternalServerError).SendString("The token is invalid")
+			return ctx.Status(fiber.StatusUnauthorized).SendString("The token is invalid")
 		}
 
 		if !claims.Authorized || claims.Exp.Before(time.Now()) {
