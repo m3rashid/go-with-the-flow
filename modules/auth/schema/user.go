@@ -13,8 +13,8 @@ type User struct {
 	Email         string                 `json:"email" bson:"email" validate:"required,email"`
 	Phone         string                 `json:"phone" bson:"phone" validate:""`
 	Avatar        string                 `json:"avatar" bson:"avatar" validate:""`
-	Deactivated   bool                   `json:"deactivated" bson:"deactivated" validate:"default=false"`
+	Deactivated   bool                   `json:"deactivated" bson:"deactivated" validate:""`
 	Password      string                 `json:"password" bson:"password" validate:"required"`
-	Roles         [](primitive.ObjectID) `json:"roles" bson:"role,omitempty" validate:"default=[]"`
+	Roles         [](primitive.ObjectID) `json:"roles" bson:"role,omitempty" validate:""`
 	Profile       primitive.ObjectID     `json:"profile" bson:"profile,omitempty" validate:""`
 }

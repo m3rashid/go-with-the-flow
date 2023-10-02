@@ -1,12 +1,14 @@
 package auth
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"github.com/m3rashid/server/db"
 	auth "github.com/m3rashid/server/modules/auth/schema"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func Login() fiber.Handler {
@@ -40,12 +42,26 @@ func Login() fiber.Handler {
 
 func Register() fiber.Handler {
 	return func(ctx *fiber.Ctx) error {
+		log.Println("Registering User")
+
 		collection := db.OpenCollection(db.Client, auth.USER_MODEL_NAME)
 
 		newUser := auth.User{}
 		err := ctx.BodyParser(&newUser)
+		if err != nil {
+			log.Println(err)
+			return ctx.Status(http.StatusBadRequest).SendString("Bad Request")
+		}
+
+		newUser.Deactivated = false
+		newUser.Deleted = false
+		newUser.Roles = []primitive.ObjectID{}
+
+		validator := validator.New()
+		err = validator.Struct(newUser)
 
 		if err != nil {
+			log.Println(err)
 			return ctx.Status(http.StatusBadRequest).SendString("Bad Request")
 		}
 
