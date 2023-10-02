@@ -65,11 +65,14 @@ func Register() fiber.Handler {
 			return ctx.Status(http.StatusBadRequest).SendString("Bad Request")
 		}
 
-		_, err = collection.InsertOne(ctx.Context(), newUser)
+		res, err := collection.InsertOne(ctx.Context(), newUser)
 		if err != nil {
 			return ctx.Status(http.StatusInternalServerError).SendString("Could Not Register User, Please try again later")
 		}
 
-		return ctx.Status(http.StatusCreated).JSON(newUser)
+		return ctx.Status(http.StatusCreated).JSON(fiber.Map{
+			"message": "User Registered Successfully",
+			"userId":  res.InsertedID,
+		})
 	}
 }

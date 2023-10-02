@@ -12,7 +12,7 @@ type ActionLog struct {
 }
 
 type BaseSchema struct {
-	ID        primitive.ObjectID `json:"id,omitempty" bson:"_id,omitempty" validate:""`
+	ID        primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty" validate:""`
 	Deleted   bool               `json:"deleted,omitempty" bson:"deleted,omitempty" validate:""`
 	CreatedBy *ActionLog         `json:"createdBy,omitempty" bson:"createdBy,omitempty"`
 	UpdatedBy *([]ActionLog)     `json:"updatedBy,omitempty" bson:"updatedBy,omitempty"`
