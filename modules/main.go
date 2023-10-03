@@ -6,6 +6,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/monitor"
 	"github.com/m3rashid/go-server/middlewares"
+	auth "github.com/m3rashid/go-server/modules/auth/schema"
+	"github.com/m3rashid/go-server/modules/flow"
 	search "github.com/m3rashid/go-server/modules/search/schema"
 )
 
@@ -32,6 +34,12 @@ type Module struct {
 }
 
 func RegisterRoutes(app *fiber.App, modules []Module) {
+	flow.StartWatchMongo([]string{
+		auth.USER_MODEL_NAME,
+		auth.PROFILE_MODEL_NAME,
+		search.RESOURCE_MODEL_NAME,
+	})
+
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello, World!")
 	})
