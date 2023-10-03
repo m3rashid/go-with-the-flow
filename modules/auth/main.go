@@ -1,9 +1,9 @@
 package auth
 
 import (
-	"github.com/m3rashid/go-server/modules"
-	auth "github.com/m3rashid/go-server/modules/auth/schema"
-	search "github.com/m3rashid/go-server/modules/search/schema"
+	"github.com/m3rashid/go-with-the-flow/modules"
+	auth "github.com/m3rashid/go-with-the-flow/modules/auth/schema"
+	search "github.com/m3rashid/go-with-the-flow/modules/search/schema"
 )
 
 var AuthModule = modules.Module{

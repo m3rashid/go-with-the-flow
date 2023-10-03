@@ -1,4 +1,4 @@
-module github.com/m3rashid/go-server
+module github.com/m3rashid/go-with-the-flow
 
 go 1.20
 

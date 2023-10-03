@@ -5,10 +5,10 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/monitor"
-	"github.com/m3rashid/go-server/middlewares"
-	auth "github.com/m3rashid/go-server/modules/auth/schema"
-	"github.com/m3rashid/go-server/modules/flow"
-	search "github.com/m3rashid/go-server/modules/search/schema"
+	"github.com/m3rashid/go-with-the-flow/middlewares"
+	auth "github.com/m3rashid/go-with-the-flow/modules/auth/schema"
+	"github.com/m3rashid/go-with-the-flow/modules/flow"
+	search "github.com/m3rashid/go-with-the-flow/modules/search/schema"
 )
 
 type Permission = map[string]struct {

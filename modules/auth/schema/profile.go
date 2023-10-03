@@ -1,6 +1,6 @@
 package auth
 
-import "github.com/m3rashid/go-server/db"
+import "github.com/m3rashid/go-with-the-flow/db"
 
 const PROFILE_MODEL_NAME = "profiles"
 

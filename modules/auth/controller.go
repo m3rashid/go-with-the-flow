@@ -6,9 +6,9 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
-	"github.com/m3rashid/go-server/db"
-	"github.com/m3rashid/go-server/middlewares"
-	auth "github.com/m3rashid/go-server/modules/auth/schema"
+	"github.com/m3rashid/go-with-the-flow/db"
+	"github.com/m3rashid/go-with-the-flow/middlewares"
+	auth "github.com/m3rashid/go-with-the-flow/modules/auth/schema"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )

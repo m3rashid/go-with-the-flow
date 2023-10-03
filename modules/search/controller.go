@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/m3rashid/go-server/db"
-	search "github.com/m3rashid/go-server/modules/search/schema"
+	"github.com/m3rashid/go-with-the-flow/db"
+	search "github.com/m3rashid/go-with-the-flow/modules/search/schema"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 

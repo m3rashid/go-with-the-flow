@@ -9,8 +9,8 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/limiter"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/joho/godotenv"
-	"github.com/m3rashid/go-server/modules"
-	"github.com/m3rashid/go-server/modules/auth"
+	"github.com/m3rashid/go-with-the-flow/modules"
+	"github.com/m3rashid/go-with-the-flow/modules/auth"
 )
 
 func main() {

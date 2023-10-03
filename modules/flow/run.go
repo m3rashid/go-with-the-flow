@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 
-	"github.com/m3rashid/go-server/db"
-	flow "github.com/m3rashid/go-server/modules/flow/schema"
+	"github.com/m3rashid/go-with-the-flow/db"
+	flow "github.com/m3rashid/go-with-the-flow/modules/flow/schema"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	v8 "rogchap.com/v8go"
