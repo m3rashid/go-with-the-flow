@@ -1,3 +1,7 @@
 ### Go Server
 
-A high performance server written in go, entirely configurable with custom flows
+What is it ?
+
+- Server based on Event-Driven Architecture
+- with crazy high performance
+- and entirely configurable with custom flows
