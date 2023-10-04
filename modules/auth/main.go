@@ -34,7 +34,9 @@ var AuthModule = modules.Module{
 			},
 		},
 	},
-	AuthenticatedRoutes: modules.Controller{},
+	AuthenticatedRoutes: modules.Controller{
+		"": AuthTest(),
+	},
 	AnonymousRoutes: modules.Controller{
 		"/login":    Login(),
 		"/register": Register(),

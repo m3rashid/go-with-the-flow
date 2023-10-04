@@ -96,3 +96,9 @@ func Register() fiber.Handler {
 		})
 	}
 }
+
+func AuthTest() fiber.Handler {
+	return func(ctx *fiber.Ctx) error {
+		return ctx.Status(http.StatusOK).SendString("Authenticated")
+	}
+}

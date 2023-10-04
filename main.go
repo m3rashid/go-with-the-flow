@@ -23,9 +23,8 @@ func main() {
 	}
 
 	app := fiber.New(fiber.Config{
-		AppName:        os.Getenv("APP_NAME"),
-		StrictRouting:  true,
 		CaseSensitive:  true,
+		AppName:        os.Getenv("APP_NAME"),
 		RequestMethods: []string{"GET", "POST", "HEAD", "OPTIONS"},
 	})
 
