@@ -38,7 +38,6 @@ func RunFunc(function string, globalFunctions ...string) interface{} {
 		return nil
 	}
 
-	log.Println(data)
 	return data
 }
 
