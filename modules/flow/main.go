@@ -16,7 +16,7 @@ import (
 )
 
 func StartWatchMongo(collectionNames []string) {
-	client, err := mongo.NewClient(options.Client().ApplyURI(os.Getenv("MONGO_URI")))
+	client, err := mongo.NewClient(options.Client().ApplyURI(os.Getenv("MONGODB_URI")))
 	if err != nil {
 		panic(err)
 	}
