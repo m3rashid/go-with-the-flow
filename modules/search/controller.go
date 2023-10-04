@@ -19,7 +19,8 @@ func HandleSearch() fiber.Handler {
 			return ctx.Status(fiber.StatusBadRequest).SendString("Could Not Parse Body")
 		}
 
-		collection := db.OpenCollection(db.Client, search.RESOURCE_MODEL_NAME)
+		mongoClient := db.DBinstance()
+		collection := db.OpenCollection(mongoClient, search.RESOURCE_MODEL_NAME)
 
 		var results []search.Resource
 		cursor, err := collection.Find(context.Background(), primitive.M{
@@ -50,7 +51,8 @@ func CreateResource(
 	ResourceType string,
 	Description string,
 ) (err error) {
-	collection := db.OpenCollection(db.Client, "search")
+	mongoClient := db.DBinstance()
+	collection := db.OpenCollection(mongoClient, "search")
 	newResource := search.Resource{
 		Name:         Name,
 		Description:  Description,

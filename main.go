@@ -11,6 +11,9 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/m3rashid/go-with-the-flow/modules"
 	"github.com/m3rashid/go-with-the-flow/modules/auth"
+	authSchema "github.com/m3rashid/go-with-the-flow/modules/auth/schema"
+	"github.com/m3rashid/go-with-the-flow/modules/flow"
+	searchSchema "github.com/m3rashid/go-with-the-flow/modules/search/schema"
 )
 
 func main() {
@@ -43,5 +46,14 @@ func main() {
 		auth.AuthModule,
 	})
 
+	go func() {
+		flow.StartWatchMongo([]string{
+			authSchema.USER_MODEL_NAME,
+			authSchema.PROFILE_MODEL_NAME,
+			searchSchema.RESOURCE_MODEL_NAME,
+		})
+	}()
+
+	log.Println("Server is running")
 	app.Listen(":" + os.Getenv("SERVER_PORT"))
 }

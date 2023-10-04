@@ -1,19 +1,36 @@
-package middlewares
+package utils
 
 import (
 	"os"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 type Claims struct {
-	Email      string    `json:"email"`
-	UserID     string    `json:"userId"`
-	Exp        time.Time `json:"exp"`
-	Authorized bool      `json:"authorized"`
-	jwt.StandardClaims
+	Email  string `json:"email"`
+	UserID string `json:"userId"`
+	jwt.RegisteredClaims
+}
+
+func GenerateJWT(userId string, email string) (string, error) {
+	expirationTime := time.Now().Add(30 * time.Minute)
+	claims := &Claims{
+		Email:  email,
+		UserID: userId,
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(expirationTime),
+		},
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	tokenString, err := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
+	if err != nil {
+		return "", err
+	}
+
+	return tokenString, nil
 }
 
 func CheckAuth() fiber.Handler {
@@ -35,13 +52,9 @@ func CheckAuth() fiber.Handler {
 			return ctx.Status(fiber.StatusUnauthorized).SendString("The token is invalid")
 		}
 
-		if !claims.Authorized || claims.Exp.Before(time.Now()) {
-			return ctx.Status(fiber.StatusUnauthorized).SendString("The token is invalid")
-		}
-
 		ctx.Locals("email", claims.Email)
 		ctx.Locals("userId", claims.UserID)
-		ctx.Locals("authorized", claims.Authorized)
+		ctx.Locals("authorized", true)
 
 		return ctx.Next()
 	}

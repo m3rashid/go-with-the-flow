@@ -42,6 +42,7 @@ func StartWatchMongo(collectionNames []string) {
 	signal.Notify(sigs, os.Interrupt, syscall.SIGTERM)
 	<-sigs
 	log.Println("Exiting...")
+	os.Exit(0)
 }
 
 func watchCollection(collection *mongo.Collection, changeStreamStage bson.D) {
@@ -78,8 +79,10 @@ func parseChangeDocument(changeDocument bson.M) {
 	collection := parsedDocument["ns"].(map[string]interface{})["coll"].(string)
 	documentKey := parsedDocument["documentKey"].(map[string]interface{})["_id"].(string)
 
+	fmt.Println(operationType, " ", collection, " ", documentKey)
+
 	if operationType == "delete" {
-		fmt.Println("Delete ", documentKey, " from ", collection, " collection")
+		// fmt.Println("Delete ", documentKey, " from ", collection, " collection")
 	} else {
 		if value, ok := data.(map[string]interface{}); ok {
 			// flow.Run(collection, operationType, value)

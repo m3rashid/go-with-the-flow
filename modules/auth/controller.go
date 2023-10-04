@@ -7,8 +7,8 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"github.com/m3rashid/go-with-the-flow/db"
-	"github.com/m3rashid/go-with-the-flow/middlewares"
 	auth "github.com/m3rashid/go-with-the-flow/modules/auth/schema"
+	"github.com/m3rashid/go-with-the-flow/utils"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -31,7 +31,8 @@ func Login() fiber.Handler {
 		}
 
 		var user auth.User
-		collection := db.OpenCollection(db.Client, auth.USER_MODEL_NAME)
+		mongoClient := db.DBinstance()
+		collection := db.OpenCollection(mongoClient, auth.USER_MODEL_NAME)
 		err = collection.FindOne(ctx.Context(), bson.M{
 			"email": loginBody.Email,
 		}).Decode(&user)
@@ -39,14 +40,12 @@ func Login() fiber.Handler {
 			return ctx.Status(http.StatusInternalServerError).SendString(err.Error())
 		}
 
-		log.Println(user.ID.String(), user.Email)
-
 		passwordsMatched := VerifyPassword(user.Password, loginBody.Password)
 		if !passwordsMatched {
 			return ctx.Status(http.StatusUnauthorized).SendString("Credentials did not match")
 		}
 
-		token, err := middlewares.GenerateJWT(user.ID.String(), user.Email)
+		token, err := utils.GenerateJWT(user.ID.String(), user.Email)
 		if err != nil {
 			return ctx.Status(http.StatusInternalServerError).SendString(err.Error())
 		}
@@ -62,7 +61,8 @@ func Register() fiber.Handler {
 	return func(ctx *fiber.Ctx) error {
 		log.Println("Registering User")
 
-		collection := db.OpenCollection(db.Client, auth.USER_MODEL_NAME)
+		mongoClient := db.DBinstance()
+		collection := db.OpenCollection(mongoClient, auth.USER_MODEL_NAME)
 
 		newUser := auth.User{}
 		err := ctx.BodyParser(&newUser)

@@ -5,10 +5,8 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/monitor"
-	"github.com/m3rashid/go-with-the-flow/middlewares"
-	auth "github.com/m3rashid/go-with-the-flow/modules/auth/schema"
-	"github.com/m3rashid/go-with-the-flow/modules/flow"
 	search "github.com/m3rashid/go-with-the-flow/modules/search/schema"
+	"github.com/m3rashid/go-with-the-flow/utils"
 )
 
 type Permission = map[string]struct {
@@ -34,11 +32,6 @@ type Module struct {
 }
 
 func RegisterRoutes(app *fiber.App, modules []Module) {
-	flow.StartWatchMongo([]string{
-		auth.USER_MODEL_NAME,
-		auth.PROFILE_MODEL_NAME,
-		search.RESOURCE_MODEL_NAME,
-	})
 
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello, World!")
@@ -50,7 +43,7 @@ func RegisterRoutes(app *fiber.App, modules []Module) {
 
 	for _, module := range modules {
 		for route, handler := range module.AuthenticatedRoutes {
-			app.Post("/api/"+module.Name+route, middlewares.CheckAuth(), handler)
+			app.Post("/api/"+module.Name+route, utils.CheckAuth(), handler)
 		}
 
 		for route, handler := range module.AnonymousRoutes {
