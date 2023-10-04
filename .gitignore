@@ -2,3 +2,6 @@
 bin/*
 !bin/.gitkeep
 tmp
+*.out
+*.pid
+*.sock

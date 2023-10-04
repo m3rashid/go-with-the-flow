@@ -1,8 +1,9 @@
 test:
-	go test
+	go test ./... -cover
 
 run:
 	go run main.go
 
 build:
-	go build -o bin/$(APP_NAME) main.go
+	rm -rf bin/main
+	go build -o bin/main main.go
