@@ -1,6 +1,6 @@
 module github.com/m3rashid/go-with-the-flow
 
-go 1.20
+go 1.21.3
 
 require (
 	github.com/go-playground/validator/v10 v10.15.4
