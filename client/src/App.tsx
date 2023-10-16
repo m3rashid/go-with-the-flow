@@ -1,21 +1,24 @@
-import { useState } from 'react';
+import React from 'react';
+
+import Message from './components/message';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <div>
-      <div className='card'>
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className='read-the-docs'>
-        Click on the Vite and React logos to learn more
-      </p>
+      Hello
+      {Array(100)
+        .fill(4)
+        .map((t) => (
+          <div>{t}</div>
+        ))}
+      <Message
+        hideUndo={false}
+        onUndo={() => console.log('undo')}
+        hideDismiss={false}
+        onDismiss={() => console.log('dismiss')}
+        message='Hello'
+        description='This is a hello message'
+      />
     </div>
   );
 }
